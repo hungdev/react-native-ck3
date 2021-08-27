@@ -1,0 +1,1 @@
+export const baseURL = 'https://forever21.hungvu.net/'
