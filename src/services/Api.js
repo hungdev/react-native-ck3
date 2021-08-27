@@ -3,7 +3,7 @@ import { baseURL } from './config'
 
 // khai bao instance = setup cho axios, base url
 const instance = axios.create({
-  baseURL: baseURL, // 'https://forever21.hungvu.net/'
+  baseURL: 'https://forever21.hungvu.net/',
   timeout: 60000,
   headers: {
     Accept: 'application/json',

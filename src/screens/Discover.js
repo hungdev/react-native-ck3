@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios'
-// import { getProduct } from '../services/Api'
+import { getImage } from '../utils'
 // import { getImage } from '../utils'
 // import { getProduct } from '../reducers/productReducer'
 // import { useDispatch, useSelector } from "react-redux";
@@ -42,8 +42,7 @@ export default function App({ route, navigation }) {
 		<TouchableOpacity style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
 			<Image
 				style={styles.imgStyle}
-				// source={{ uri: getImage(item.images?.[0]) }}
-				source={{ uri: item.img }}
+				source={{ uri: getImage(item.images[0]) }}
 			/>
 			<View style={styles.rowPrice}>
 				<Text>{item.price}</Text>
