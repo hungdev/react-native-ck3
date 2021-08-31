@@ -42,7 +42,8 @@ export default function App({ route, navigation }) {
 		<TouchableOpacity style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
 			<Image
 				style={styles.imgStyle}
-				source={{ uri: getImage(item.images[0]) }}
+				// source={{ uri: getImage(item.images[0]) || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
+				source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
 			/>
 			<View style={styles.rowPrice}>
 				<Text>{item.price}</Text>
