@@ -3,7 +3,7 @@ import { baseURL } from './config'
 
 // khai bao instance = setup cho axios, base url
 const instance = axios.create({
-  baseURL: 'https://forever21.hungvu.net/',
+  baseURL: 'https://api.thecoffeehouse.com/api/',
   timeout: 60000,
   headers: {
     Accept: 'application/json',
@@ -18,4 +18,9 @@ const instance = axios.create({
 
 // https://forever21.hungvu.net/      get-products
 // goi phuong thuc + phan duoi domain
-export const getProductList = () => instance.get('get-products')
+
+// https://api.thecoffeehouse.com/api/verify_mobile
+// https://api.thecoffeehouse.com/api/v2/menu
+export const getProductList = () => instance.get('v2/menu')
+
+export const login = (params) => instance.post('verify_mobile', params)
