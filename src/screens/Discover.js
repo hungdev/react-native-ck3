@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios'
 import { getImage } from '../utils'
-// import { getImage } from '../utils'
+import { useSelector, useDispatch } from "react-redux";
 // import { getProduct } from '../reducers/productReducer'
 // import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +12,7 @@ import { getProductList } from '../services/Api'
 
 
 export default function App({ route, navigation }) {
+	const dispatch = useDispatch();
 	const [product, setProduct] = useState([])
 	// const dispatch = useDispatch();
 	// const product = useSelector((store) => store.productReducer.products);
@@ -22,7 +23,7 @@ export default function App({ route, navigation }) {
 		const callGetProductList = async () => {
 			try {
 				const response = await getProductList();
-				console.log('rs', response.data.data); // data tu api tra ve
+				// console.log('rs', response.data.data); // data tu api tra ve
 				setProduct(response.data.data)
 
 			} catch (error) {
@@ -33,25 +34,35 @@ export default function App({ route, navigation }) {
 		callGetProductList()
 	}, [])
 
-
-	const onMoveToDetail = (data) => () => {
-		navigation.navigate('Detail', { detail: data });
+	const onAddToCart = (item) => () => {
+		dispatch({ type: 'ADD_CART', data: { ...item, quantity: 1 } })
 	}
 
-	const renderItem = ({ item }) => (
-		<TouchableOpacity style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
-			<Image
-				style={styles.imgStyle}
-				// source={{ uri: getImage(item.images[0]) || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
-				source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
-			/>
-			<View style={styles.rowPrice}>
-				<Text>{item.price}</Text>
-				<Ionicons name="heart" size={30} color={item.heart ? 'red' : 'grey'} />
+
+	const onMoveToDetail = (data) => () => {
+		// navigation.navigate('Detail', { detail: data });
+	}
+
+	const renderItem = ({ item }) => {
+		// console.log('item', item)
+		return (
+			<View style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
+				<Image
+					style={styles.imgStyle}
+					source={{ uri: getImage(item.images[0]) || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
+				// source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
+				/>
+				<View style={styles.rowPrice}>
+					<Text>{item.price}</Text>
+					<TouchableOpacity onPress={onAddToCart(item)}>
+						<Ionicons name="heart" size={30} color={item.heart ? 'red' : 'grey'} />
+					</TouchableOpacity>
+				</View>
+				<Text>{item.name}</Text>
 			</View>
-			<Text>{item.name}</Text>
-		</TouchableOpacity>
-	);
+		)
+	};
+
 	return (
 		<View>
 			<View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'grey' }}>
