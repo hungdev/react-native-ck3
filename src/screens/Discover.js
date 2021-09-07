@@ -36,6 +36,7 @@ export default function App({ route, navigation }) {
 
 	const onAddToCart = (item) => () => {
 		dispatch({ type: 'ADD_CART', data: { ...item, quantity: 1 } })
+		// navigation.navigate('Bag')
 	}
 
 
