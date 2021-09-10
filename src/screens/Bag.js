@@ -12,14 +12,23 @@ export default function CartScreen() {
 	const dispatch = useDispatch();
 	const productList = useSelector((store) => store.cartReducer.products);
 
+	const totalMoney = productList.reduce((acc, ele) => acc + Number(ele.price), 0)
+
 	console.log('productList', productList)
 
-	const onChangeQuantity = () => () => { }
+	const onChangeQuantity = (type, item) => () => {
+		if (type === 'reduce' && item.quantity === 1) {
+			dispatch({ type: 'REMOVE_ITEM', data: item })
+		} else {
+			dispatch({ type: 'CHANGE_QUANTITY', data: item, changeQuantityType: type })
+		}
+
+	}
 
 	const onRemoveItem = (item) => () => {
 		dispatch({ type: 'REMOVE_ITEM', data: item })
 	}
-	const onRemoveAll = () => { }
+	const onRemoveAll = () => dispatch({ type: 'REMOVE_ALL' })
 
 	const renderItem = ({ item }) => {
 		return (
@@ -31,7 +40,7 @@ export default function CartScreen() {
 						<View style={{ flex: 1, }}>
 							<View style={{ flexDirection: 'row' }}>
 								<Text style={{ fontSize: 19, fontWeight: 'bold', marginRight: 10 }}>{item.price}</Text>
-								<Text style={{ fontSize: 19, textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{item.price}</Text>
+								<Text style={{ fontSize: 19, textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>{item.price} $</Text>
 							</View>
 							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 								<Text style={{ textAlign: 'center', width: 50, borderWidth: 1, padding: 5, borderRadius: 5, backgroundColor: '#90ee90', borderColor: 'transparent' }}>
@@ -59,25 +68,42 @@ export default function CartScreen() {
 
 
 	return (
-		<View>
+		<View style={{ flex: 1 }}>
 			<FlatList
-				style={{ backgroundColor: 'grey' }}
+				style={{ backgroundColor: 'grey', flex: 1 }}
 				data={productList}
 				renderItem={renderItem}
 				keyExtractor={(item) => item._id?.toString()}
-			// extraData={}
+				ListFooterComponent={
+					<View>
+						{
+							productList?.length ?
+								<TouchableOpacity style={{ marginTop: 10, marginLeft: 10, marginBottom: 50 }} onPress={onRemoveAll}>
+									<Text style={{ color: 'white' }}>
+										Remove all
+									</Text>
+								</TouchableOpacity> : null
+						}
+						{productList?.length ? <CartView style={{ height: 100, paddingHorizontal: 15 }}>
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+								<Text>Total item: </Text>
+								<Text>{productList?.length}</Text>
+
+							</View>
+							<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+								<Text>Total money: </Text>
+								<Text>{totalMoney} $</Text>
+							</View>
+						</CartView> : null}
+					</View>
+				}
 			/>
-			{productList?.length ?
-				<TouchableOpacity style={{ marginTop: 10 }} onPress={onRemoveAll}>
-					<Text>
-						Remove all
-					</Text>
-				</TouchableOpacity> :
+
+			{!productList?.length && (
 				<View style={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
 					<Text>Nothing here!</Text>
-				</View>
+				</View>)
 			}
-
 		</View>
 	)
 }

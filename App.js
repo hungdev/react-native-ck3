@@ -2,6 +2,9 @@ import React, { Component } from "react";
 //Redux
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { persistStore, persistReducer } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import allReducers from "./src/reducers";
 
@@ -9,13 +12,23 @@ import AppNavigation from './src/appNavigation/router'
 
 // import Home from "./screens/Home";
 
-let store = createStore(allReducers);
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+}
+
+const persistedReducer = persistReducer(persistConfig, allReducers)
+
+let store = createStore(persistedReducer);
+let persistor = persistStore(store)
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppNavigation />
+        <PersistGate loading={null} persistor={persistor}>
+          <AppNavigation />
+        </PersistGate>
       </Provider>
     );
   }
