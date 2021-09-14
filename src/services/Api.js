@@ -15,6 +15,9 @@ const instance = axios.create({
 export const getProductList = () => {
   return instance.get('get-products')
 }
+export const getProductDetail = (id) => {
+  return instance.get(`product/${id}`)
+}
 
 // https://forever21.hungvu.net/      get-products
 // goi phuong thuc + phan duoi domain

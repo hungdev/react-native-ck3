@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Image, StyleSheet, Touchable } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios'
 import { getImage } from '../utils'
 import { useSelector, useDispatch } from "react-redux";
+import Loading from '../components/Loading'
 // import { getProduct } from '../reducers/productReducer'
 // import { useDispatch, useSelector } from "react-redux";
 
@@ -14,6 +15,7 @@ import { getProductList } from '../services/Api'
 export default function App({ route, navigation }) {
 	const dispatch = useDispatch();
 	const [product, setProduct] = useState([])
+	const [isLoading, setIsLoading] = useState(false)
 	// const dispatch = useDispatch();
 	// const product = useSelector((store) => store.productReducer.products);
 
@@ -22,9 +24,11 @@ export default function App({ route, navigation }) {
 		// getProductList()
 		const callGetProductList = async () => {
 			try {
+				setIsLoading(true)
 				const response = await getProductList();
 				// console.log('rs', response.data.data); // data tu api tra ve
 				setProduct(response.data.data)
+				setIsLoading(false)
 
 			} catch (error) {
 				console.error(error);
@@ -41,13 +45,13 @@ export default function App({ route, navigation }) {
 
 
 	const onMoveToDetail = (data) => () => {
-		// navigation.navigate('Detail', { detail: data });
+		navigation.navigate('ProductDetailScreen', { detail: data });
 	}
 
 	const renderItem = ({ item }) => {
 		// console.log('item', item)
 		return (
-			<View style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
+			<TouchableOpacity style={{ width: '45%', }} onPress={onMoveToDetail(item)}>
 				<Image
 					style={styles.imgStyle}
 					source={{ uri: getImage(item.images[0]) || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png' }}
@@ -60,12 +64,13 @@ export default function App({ route, navigation }) {
 					</TouchableOpacity>
 				</View>
 				<Text>{item.name}</Text>
-			</View>
+			</TouchableOpacity>
 		)
 	};
 
 	return (
-		<View>
+		<View style={{ flex: 1 }}>
+			{isLoading && <Loading />}
 			<View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: 'grey' }}>
 				<TouchableOpacity style={{ flexDirection: 'row', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 					<Text>SORT</Text>
@@ -82,7 +87,6 @@ export default function App({ route, navigation }) {
 				renderItem={renderItem}
 				keyExtractor={item => item._id?.toString()}
 				columnWrapperStyle={{ justifyContent: 'space-around', marginBottom: 10, flex: 1 }}
-				style={{ marginBottom: 100 }}
 			/>
 		</View>
 	)

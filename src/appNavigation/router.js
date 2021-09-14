@@ -13,6 +13,7 @@ import WishListScreen from '../screens/WishList'
 import BagScreen from '../screens/Bag'
 import AccountScreen from '../screens/Account'
 
+const ContainerStack = createNativeStackNavigator();
 const DiscoverStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -35,8 +36,8 @@ export default function App() {
     );
   }
 
-  return (
-    <NavigationContainer>
+  const TabApp = () => {
+    return (
       <Tab.Navigator
         initialRouteName='Discover'
         screenOptions={({ route }) => ({
@@ -71,6 +72,17 @@ export default function App() {
         <Tab.Screen name="Bag" component={BagScreen} />
         <Tab.Screen name="Account" component={AccountScreen} />
       </Tab.Navigator>
+    )
+  }
+
+
+
+  return (
+    <NavigationContainer>
+      <ContainerStack.Navigator screenOptions={{ headerShown: false }}>
+        <ContainerStack.Screen name="DiscoverScreen" component={TabApp} />
+        <ContainerStack.Screen name="ProductDetailScreen" component={ProductDetailScreen} />
+      </ContainerStack.Navigator>
     </NavigationContainer>
   )
 }
