@@ -6,51 +6,6 @@ import { getMenu, getCategory } from '../services/Api'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-const DATA =
-	[
-		{
-			title: "Family",
-			contactList: [
-				{ title: "Armani Snider" },
-				{ title: "Macauly Downs" },
-				//... More name
-			]
-		},
-		{
-			title: "Company",
-			contactList: [
-				{ title: "Armani Snider" },
-				{ title: "Macauly Downs" },
-				//... More name
-			]
-		},
-		{
-			title: "Club",
-			contactList: [
-				{ title: "Armani Snider" },
-				{ title: "Macauly Downs" },
-				//... More name
-			]
-		},
-		{
-			title: "Ccc",
-			contactList: [
-				{ title: "Armani Snider" },
-				{ title: "Macauly Downs" },
-				//... More name
-			]
-		},
-		{
-			title: "ddd",
-			contactList: [
-				{ title: "Armani Snider" },
-				{ title: "Macauly Downs" },
-				//... More name
-			]
-		},
-
-	]
-
 export default function Shop() {
 	const dispatch = useDispatch();
 	const [order, setOrder] = useState([])
@@ -113,12 +68,12 @@ export default function Shop() {
 				<TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', width: '65%', height: 40, backgroundColor: '#d3d3d3', borderRadius: 10, justifyContent: 'flex-end' }}>
 					<Text>{category?.name}</Text><AntDesign name={'down'} size={15} color={'#5e5e5e'} style={{ marginRight: 10 }} />
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.btn}>
+				{/* <TouchableOpacity style={styles.btn}>
 					<AntDesign name={'search1'} size={18} color={'grey'} />
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Favorite')}>
 					<AntDesign name={'heart'} size={18} color={'grey'} />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 		)
 	}
