@@ -1,6 +1,16 @@
+import { getProductDetail } from '../services/Api'
+
 const initialState = {
-  products: []
+  products: [],
+  productDetail: null
 };
+
+export const getDetailProduct = (id) => async (dispatch) => {
+  console.tron.log('id', id)
+  const response = await getProductDetail(id);
+  // console.log('rs', response.data.data); // data tu api tra ve
+  dispatch({ type: 'GET_DATA', data: response.data.data })
+}
 
 export default function cartReducer(state = initialState, action) {
   switch (action.type) {
@@ -55,15 +65,24 @@ export default function cartReducer(state = initialState, action) {
       const productChangeQuantity = state.products?.map(e => e._id === action.data._id ? ({ ...e, quantity: isReduce ? (e.quantity - 1) : (e.quantity + 1) }) : e)
 
       return {
+        ...state,
         products: productChangeQuantity
       };
 
+    case 'GET_DATA':
+      return {
+        ...state,
+        productDetail: action.data
+      }
+
     case 'REMOVE_ITEM':
       return {
+        ...state,
         products: state.products?.filter(e => e?._id !== action.data?._id)
       }
     case 'REMOVE_ALL':
       return {
+        ...state,
         products: []
       }
 

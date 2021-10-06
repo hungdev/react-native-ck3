@@ -5,34 +5,37 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductDetailApi } from '../reducers/productReducer'
 import { getProductDetail } from '../services/Api'
 import { getImage } from '../utils'
+import { getDetailProduct } from '../reducers/cartReducer'
 
 const sizes = ['S', "M", "L", 'XL', 'XXL']
 export default function DetailScreen({ route, navigation }) {
   const dispatch = useDispatch();
-  const [detailProduct, setDetailProduct] = useState()
+  // const [detailProduct, setDetailProduct] = useState()
   const { detail } = route.params; // const detail = route.params.detail
 
-  console.tron.log('detail', detail)
+  const detailProduct = useSelector((store) => store.cartReducer.productDetail);
 
-  const productDetail = {}
+  // cach 1
+  // useEffect(() => {
+  //   const callGetProductList = async () => {
+  //     try {
+  //       const response = await getProductDetail(detail?._id);
+  //       // console.log('rs', response.data.data); // data tu api tra ve
+  //       setDetailProduct(response.data.data)
 
-  // const productDetail = useSelector((store) => store.productReducer.productDetail);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  //   callGetProductList()
+  // }, [detail])
+
+  // cach 2 -  dung voi redux thunk
   useEffect(() => {
-    const callGetProductList = async () => {
-      try {
-        const response = await getProductDetail(detail?._id);
-        // console.log('rs', response.data.data); // data tu api tra ve
-        setDetailProduct(response.data.data)
-
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    callGetProductList()
+    dispatch(getDetailProduct(detail?._id))
   }, [detail])
 
-  // const onAddCart = () => dispatch({ type: 'ADD_QUANTITY', data: item })
+
   const onAddCart = () => {
     dispatch({ type: 'ADD_CART', detail: detail })
   }
@@ -44,7 +47,7 @@ export default function DetailScreen({ route, navigation }) {
           style={{ position: 'absolute', top: 20, right: 20, }}
         />
       </TouchableOpacity>
-      <Image source={{ uri: getImage(detailProduct.images[0]) }}
+      <Image source={{ uri: getImage(detailProduct?.images?.[0]) }}
         style={{ width: '100%', height: 360, resizeMode: 'contain' }} />
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{detailProduct?.name}</Text>
