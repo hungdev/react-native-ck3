@@ -24,11 +24,11 @@ export default function App({ route, navigation }) {
 		// getProductList()
 		const callGetProductList = async () => {
 			try {
-				setIsLoading(true)
-				const response = await getProductList();
-				// console.log('rs', response.data.data); // data tu api tra ve
-				setProduct(response.data.data)
-				setIsLoading(false)
+				// setIsLoading(true)
+				// const response = await getProductList();
+				// // console.log('rs', response.data.data); // data tu api tra ve
+				// setProduct(response.data.data)
+				// setIsLoading(false)
 
 			} catch (error) {
 				console.error(error);
